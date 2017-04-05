@@ -1,0 +1,59 @@
+#!/bin/sh
+cd /usr/bin
+
+ldd arecordmidi
+
+ldd ccmakedep
+
+ldd cpan
+
+ldd db_printlog
+
+ldd ecpg
+
+ldd fprintd-enroll
+
+ldd glxinfo64
+
+ldd gst-launch
+
+ldd htmex
+
+ldd ipcmk
+
+ldd kdialog
+
+ldd last
+
+ldd lsattr
+
+ldd mobj_dump
+
+ldd nproc
+
+ldd pamchannel
+
+ldd pbmmask
+
+ldd pgmmake
+
+ldd pngtopnm
+
+ldd posplit
+
+ldd ps2pdf14
+
+ldd repoquery
+
+ldd sbcl
+
+ldd smbcacls
+
+ldd systemd-firstboot
+echo "tracker-search----------------"
+ldd tracker-search
+echo "whatis----------------"
+ldd whatis
+echo "xmltex----------------"
+ldd xmltex
+echo "----------------"

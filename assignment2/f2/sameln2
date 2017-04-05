@@ -1,0 +1,29 @@
+#! /bin/sh
+# sameln --- remove duplicate copies of files in specified directory
+
+D=$1
+cd $D #go to directory specified as default input
+
+fileNum=0 #save file numbers
+
+DIR=`ls -a | sort`
+for f in $DIR #for every file in the directory
+do
+	files[$fileNum]=$f #save that file into the array
+	fileNum=$((fileNum+1)) #increment the fileNum
+done
+
+for((j=0; j<$fileNum; j++)) #for every file
+do
+	if [ -f "$files[$j]" ] #access that file in the array
+	then
+		for((k=0; k<$fileNum; k++)) #for every other file
+		do
+			if [ -f "$files[$k]" ] #access other files in the array
+			then
+				test[cmp -s ${files[$j]} ${files[$k]}] #compare if the files are identical
+				[ln ${files[$j]} ${files[$k]}] #change second file to a hard link
+			fi
+		done
+	fi
+done

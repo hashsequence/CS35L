@@ -1,0 +1,46 @@
+1) I made a hw4.txt and I got another git clone of diffutils
+
+2) command: git checkout v3.p -b quote
+
+3) patch -p1 < ../quote-3.0-patch.txt
+
+patch -p1 < ../quote-3.0-patch.txt
+patching file src/cmp.c
+patching file src/diff.c
+patching file src/diff3.c
+patching file src/dir.c
+patching file src/sdiff.c
+patching file src/util.c
+
+4) to create a ChangeLog I want to first add a chane log entry 
+indicating the modifications to the 6 .c files then I want to commit the 
+changes itnto a ChangeLog
+
+5)
+commands:
+git add .
+
+6)
+git commit -F src/ChangeLog
+
+7) Now I use the git format patch
+
+git format-patch -1 --stdout > formatted-patch.txt
+
+8) my partner was joshua sambasivam
+
+I did the same ./bootstrap ./configure make make check
+
+9)
+make distdir
+I was able to see the ChannelLog
+
+10) I had to log onto lnxsrv02 
+and export PATH=/usr/local/cs/bin:$PATH
+
+then I  cd ~eggert/src/gnu/emacs
+gitk
+
+print screen
+
+

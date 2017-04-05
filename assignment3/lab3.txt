@@ -1,0 +1,160 @@
+1) I used wget on the coreutils 7.6 link on the web page to download
+the coreutils-7.6.tar.gz
+
+2) I used the tar xzvf coreutils-7.6.tar.gz
+  x for extract, v for verbose, f for fil, z for gzip
+
+3) I then read the INSTALL 
+commands
+
+./configure --prefix=/u/eng/class/classave/coreutilsInstall
+make 
+make install
+
+4) I cd into the src and I used the ls script in the directory with command ./ls -l 
+
+sample output:
+
+-rwxr-xr-x 1 classave class 127226 2016-10-09 14:10 [
+-rwxr-xr-x 1 classave class 119465 2016-10-09 14:10 base64
+
+
+the usual ls command display this
+
+-rwxr-xr-x 1 classave class 127226 Oct  9 14:10 [
+-rwxr-xr-x 1 classave class 119465 Oct  9 14:10 base64
+
+5) copy brady's patch onto emacs brady_patch:
+
+patch:
+--- a/src/ls.c
++++ b/src/ls.c
+@@ -2014,7 +2014,6 @@ decode_switches (int argc, char **argv)
+             break;
+ 
+           case long_iso_time_style:
+-          case_long_iso_time_style:
+             long_time_format[0] = long_time_format[1] = "%Y-%m-%d %H:%M";
+             break;
+ 
+@@ -2030,13 +2029,8 @@ decode_switches (int argc, char **argv)
+                    formats.  If not, fall back on long-iso format.  */
+                 int i;
+                 for (i = 0; i < 2; i++)
+-                  {
+-                    char const *locale_format =
+-                      dcgettext (NULL, long_time_format[i], LC_TIME);
+-                    if (locale_format == long_time_format[i])
+-                      goto case_long_iso_time_style;
+-                    long_time_format[i] = locale_format;
+-                  }
++                  long_time_format[i] =
++                    dcgettext (NULL, long_time_format[i], LC_TIME);
+               }
+           }
+       /* Note we leave %5b etc. alone so user widths/flags are honored.  */
+
+
+// the patch was executed with command patch -p1 < brady_patch 
+in the u/eng/class/classave/coreutils-7.6 directory
+p1 is to get rid of "/" beggining of the a/src/ls.c
+then I used the command ./configure
+then I used the command make 
+I made a seperate directory using --prefix in coreutilsInstall that
+has the unpatch ls
+
+output of make: 
+[classave@lnxsrv09 ~/coreutils-7.6]$ make
+make  all-recursive
+make[1]: Entering directory `/w/home.15/class/classave/coreutils-7.6'
+Making all in lib
+make[2]: Entering directory `/w/home.15/class/classave/coreutils-7.6/lib'
+make  all-recursive
+make[3]: Entering directory `/w/home.15/class/classave/coreutils-7.6/lib'
+make[4]: Entering directory `/w/home.15/class/classave/coreutils-7.6/lib'
+make[4]: Leaving directory `/w/home.15/class/classave/coreutils-7.6/lib'
+make[3]: Leaving directory `/w/home.15/class/classave/coreutils-7.6/lib'
+make[2]: Leaving directory `/w/home.15/class/classave/coreutils-7.6/lib'
+Making all in src
+make[2]: Entering directory `/w/home.15/class/classave/coreutils-7.6/src'
+make  all-am
+make[3]: Entering directory `/w/home.15/class/classave/coreutils-7.6/src'
+make[3]: Nothing to be done for `all-am'.
+make[3]: Leaving directory `/w/home.15/class/classave/coreutils-7.6/src'
+make[2]: Leaving directory `/w/home.15/class/classave/coreutils-7.6/src'
+Making all in doc
+make[2]: Entering directory `/w/home.15/class/classave/coreutils-7.6/doc'
+make[2]: Nothing to be done for `all'.
+make[2]: Leaving directory `/w/home.15/class/classave/coreutils-7.6/doc'
+Making all in man
+make[2]: Entering directory `/w/home.15/class/classave/coreutils-7.6/man'
+  GEN    dir.1
+  GEN    vdir.1
+  GEN    ls.1
+make[2]: Leaving directory `/w/home.15/class/classave/coreutils-7.6/man'
+Making all in po
+make[2]: Entering directory `/w/home.15/class/classave/coreutils-7.6/po'
+make[2]: Nothing to be done for `all'.
+make[2]: Leaving directory `/w/home.15/class/classave/coreutils-7.6/po'
+Making all in tests
+make[2]: Entering directory `/w/home.15/class/classave/coreutils-7.6/tests'
+make[2]: Nothing to be done for `all'.
+make[2]: Leaving directory `/w/home.15/class/classave/coreutils-7.6/tests'
+Making all in gnulib-tests
+make[2]: Entering directory `/w/home.15/class/classave/coreutils-7.6/gnulib-tests'
+make  all-recursive
+make[3]: Entering directory `/w/home.15/class/classave/coreutils-7.6/gnulib-tests'
+make[4]: Entering directory `/w/home.15/class/classave/coreutils-7.6/gnulib-tests'
+make[4]: Nothing to be done for `all-am'.
+make[4]: Leaving directory `/w/home.15/class/classave/coreutils-7.6/gnulib-tests'
+make[3]: Leaving directory `/w/home.15/class/classave/coreutils-7.6/gnulib-tests'
+make[2]: Leaving directory `/w/home.15/class/classave/coreutils-7.6/gnulib-tests'
+make[2]: Entering directory `/w/home.15/class/classave/coreutils-7.6'
+make[2]: Nothing to be done for `all-am'.
+make[2]: Leaving directory `/w/home.15/class/classave/coreutils-7.6'
+
+only the files ls.o dir vdir ls were modified, which makes sense since we 
+are patching ls
+
+these files were recently modified in the src directory
+
+-rwxr-xr-x 1 classave class 457112 Oct 10 17:30 ls
+-rw-r--r-- 1 classave class 144363 Oct 10 17:08 ls.c
+-rw-r--r-- 1 classave class 144363 Oct 10 17:26 ls.c.orig
+-rw-r--r-- 1 classave class    955 Oct 10 17:26 ls.c.re
+
+6)
+the modified ls command is in u/eng/class/classave/coreutils-7.6/src/ls
+modified ls:
+
+[classave@lnxsrv09 ~/coreutils-7.6/src]$ ./ls -l
+total 30056
+-rwxr-xr-x 1 classave class 127226 Oct  9 14:10 [
+-rwxr-xr-x 1 classave class 119465 Oct  9 14:10 base64
+-rw-r--r-- 1 classave class   8422 Sep  1  2009 base64.c
+
+the unmodified ls command is in in u/eng/class/classave/coreutilsInstall/bin/ls
+unmodified ls
+-rwxr-xr-x 1 classave class 127226 2016-10-09 14:10 [
+-rwxr-xr-x 1 classave class 119465 2016-10-09 14:10 base64
+-rw-r--r-- 1 classave class   8422 2009-09-01 04:01 base64.c
+
+the obvious main difference is now the month and date is now in english
+testfiles
+
+I used touch -t 201501010101 to modiffy test_File
+//which changes the date to year month day time
+modified /.s in u/eng/class/classave/coreutils-7.6/src/ls
+-rw-r--r--  1 classave class        0 Oct 10  2015 test_File  //year old
+-rw-r--r--  1 classave class        0 Oct 10 17:46 testfile1  //new ones
+-rw-r--r--  1 classave class        0 Oct 10 17:51 testfile2
+
+
+unmodified old_coreutils // I used the ./ls in u/eng/class/classave/coreutilsInstall/bin/ls
+-rw-r--r--  1 classave class        0 2015-10-10 10:10 test_File
+-rw-r--r--  1 classave class        0 2016-10-10 17:46 testfile1
+-rw-r--r--  1 classave class        0 2016-10-10 17:51 testfile2
+
+//the year old modified file shows the year rather than the time of the day
+
+

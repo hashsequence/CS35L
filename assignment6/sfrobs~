@@ -1,0 +1,23 @@
+#!/bin/sh
+
+x=""
+y=""
+
+for ((i=0;i<=255;i++))
+do
+ x+="$(printf "\\%03o" $i)"
+ y+="$(printf "\\%03o" $((i ^ 42)))"
+done
+
+echo $x
+echo $y
+
+#z=""
+#for ((i=0;i<=255;i++))
+#do
+#    printf $(printf "\\%03o" $i)
+#done
+#echo $z
+
+cat | tr "$x" "$y" | sort | tr "$x" "$y"
+

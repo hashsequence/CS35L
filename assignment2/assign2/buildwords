@@ -1,0 +1,15 @@
+#!/bin/sh
+
+grep "<td>.*</td>" | #filters out all the words that is contains <td> and </td>
+sed "s/<td>//g" | #replaces all the <td> with empty space globaly
+sed "s/<\/td>//g" | #replaces all the </td> with empty space globaly
+sed "s/<u>//g" | #replaces all the <u> with empty space globably
+sed  "s/<\/u>//g" |  #replaces all the </u> with empty space globably
+sed "s/<.*>//g" |  #deletes all the words contained in < > including the < > 
+sed "s/\`/'/g" | #replace all grave accents with apostrophes
+tr  '[:upper:]' '[:lower:]'| #replaces all uppercase characters with lower
+tr ',' '[\n*]' | #replaces all commas with newlines
+tr ' ' '[\n*]' |#replaces all spaces with newlines
+sort -u | #sorts and remove duplicates
+grep  -v "[^'pkmnwlhaeiou]" #find all the lines that contains only those charac
+                            #ters invert that set and delete all those lines

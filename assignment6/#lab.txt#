@@ -1,0 +1,85 @@
+Laboratory: Buffered versus unbuffered I/O
+===============================================
+AVERY WONG
+cs35L
+===============================================
+
+Since I needed to make a tr command I had to implement something
+like this ./tr2b abcdefghijklmnopqrstuvwxyz ABCDEFGHIJKLMNOPQRSTUVWXYZ
+
+first I I had to learn what getchar() and putchar() does
+and what read(), and write does
+
+ssize_t read(int fildes, void *buf, size_t nbyte);
+write(int fildes, const void *buf, size_t nbyte);
+
+where fildes is the position of the file offset
+*buf is the pointer to what you are reading
+nbyte is the number of bytes we are reading an in this case 
+fildes is 0 
+nbyte is 1 since char is 1 
+and we are passing an address to a char into buf
+
+after creating the tr2b.c and tr2u.c 
+I moved onto 3)
+
+3)
+first I created a file with 500000 bytes using this command:
+ /dev/urandom tr -dc "[:alnum:]" | head -c5000000 > file1.txt
+< /dev/urandom tr -dc "[:alnum:]" | head -c5000000 > file1.txt
+
+then I used strace:
+
+strace -c ./tr2b 'x' 'y' < file1.txt
+the output was the contents of file.txt followed by:
+% time     seconds  usecs/call     calls    errors syscall
+------ ----------- ----------- --------- --------- ----------------
+ 92.48    0.003946           1      4883           write
+  4.19    0.000179           2        79           read
+  1.15    0.000049           5         9           mmap
+  0.61    0.000026           7         4           mprotect
+  0.40    0.000017           4         4           fstat
+  0.30    0.000013           7         2           open
+  0.21    0.000009           9         1           munmap
+  0.16    0.000007           7         1         1 access
+  0.16    0.000007           7         1           execve
+  0.14    0.000006           3         2           close
+  0.09    0.000004           4         1           brk
+  0.09    0.000004           4         1           arch_prctl
+------ ----------- ----------- --------- --------- ----------------
+100.00    0.004267                  4988         1 total
+
+strace -c ./tr2u 'x' 'y' < file1.txt
+
+% time     seconds  usecs/call     calls    errors syscall
+------ ----------- ----------- --------- --------- ----------------
+ 53.07    4.513296           1   5000002           read
+ 46.92    3.990260           1   5000000   5000000 write
+  0.00    0.000041           6         7           mmap
+  0.00    0.000027           7         4           mprotect
+  0.00    0.000015           8         2           open
+  0.00    0.000010          10         1           munmap
+  0.00    0.000008           4         2           close
+  0.00    0.000008           4         2           fstat
+  0.00    0.000007           7         1         1 access
+  0.00    0.000007           7         1           execve
+  0.00    0.000004           4         1           brk
+  0.00    0.000004           4         1           arch_prctl
+------ ----------- ----------- --------- --------- ----------------
+100.00    8.503687              10000024   5000001 total
+
+
+4)
+
+ time ./tr2b 'x' 'y' < file1.txt
+
+real    0m1.972s
+user    0m0.152s
+sys     0m0.027s
+
+time ./tr2u 'x' 'y' < file1.txt
+real    0m5.470s
+user    0m0.271s
+sys     0m5.135s
+
+tr2u is 5x slower than tr2b

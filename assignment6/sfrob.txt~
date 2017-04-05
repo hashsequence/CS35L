@@ -1,0 +1,15 @@
+time ./sfrob < file1.txt > trash.txt
+
+real    0m0.358s
+user    0m0.072s
+sys     0m0.292s
+
+time ./sfrobu < file1.txt > trash.txt
+
+Comparisons: 1
+
+real    0m6.118s
+user    0m0.289s
+sys     0m5.782s
+
+clearly system calls are alot slower than 

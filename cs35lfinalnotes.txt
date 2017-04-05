@@ -1,0 +1,565 @@
+week 1
+--------------------------------------------------------------
+
+open source means source code is free to all
+ex.
+linux
+apache
+
+linux os
+-kernel
+--core
+-shell
+--user interact with the system
+
+processes vs file
+-main thing that distinguish is that files are static
+while process is a dynamic thing
+-a process is a program in execution
+and is dynamic 
+file ex
+-dir
+-input file
+-application
+
+important commands 
+ls ll
+cat touch 
+pwd
+cd 
+mkdir
+date
+time
+echo
+chmod 
+
+ls -l is the same as ll
+thats because ll is an alias to ls -l
+ll does not have a manual
+
+cat > file cat >> file
+
+touch 
+-makes the file 
+-updates the time stamp which cat doesnt do
+
+pwd = print working directory 
+passwd - sets password for user
+
+absolute path givs in respect to root
+relative path gives path of a file in respect
+to current directory
+
+time 
+prints out real time, sys time, usr time
+
+chmod - change file permissions
+--octal format
+chmod 600 = gives read write to user
+
+each digit is interpreted as a binary number
+
+rwx
+111
+
+u   g   o
+
+--- --- ---
+
+6 - 110 for user
+0 -000 for group
+0 -000 gor other
+
+chmod 777 is 111 111 111 so
+gives permission to everybody
+
+week 2
+-----------------------------------------------------------------------
+locale 
+-- stores the format of the environnment variables
+of how they are displayed
+
+export VAR="   "
+
+export PATH=/usr/local/cs/bin:$PATH
+
+tells where to pick up the executable
+
+shell is an interprepted language
+interpreted vs compiled
+
+interpreted 
+--python, shell
+compile
+--c, c++
+
+bytecode is produced in compile but not in interpreted 
+
+#! sh - shell
+   bsh - bash
+   ksh - korn shell
+
+standard stream
+
+1) input ./a.sh < inputfile // 
+--if you want ./a.sh inputfile then have $1  
+2) output
+
+-- us ./a.sh > file
+
+3) stol error >
+
+sed grep tr
+
+wc -l 
+head -100 file prints out first 100 lines
+tail -100 file prints out last 100 lines
+
+comm 
+col  1 = unique to 1
+col 2 = unique to 2
+col 3 = intersection
+
+diff
+
+before I commit with git diff will show differences
+
+regex
+qualifiers
++ one or more
+? zero or one
+* zero or more
+
+anchors
+
+\A match must occur at start of string
+$ match must occur at the beggining og the string or
+before \n at the end of the line or string
+
+Grouping
+
+(set/group)
+
+alternation
+| ex th(e|is|at) matches "the" "this" in "this is the day"
+
+^google everything that begins with google
+google$ ends with google
+^google$ line is google
+goo.*gle all the words that start with goo and ends with gle
+goo*gle google with any amt of o's ex. gogle goooooooogle
+goo?gle is gogle or google
+
+week3
+---------------------------------------------------------------
+
+wget
+curl
+
+tar -xzvf
+
+x = extract
+v = verbose
+z = unzip
+f = file
+
+./configure 
+this command checks if your systems config 
+is suitable then generates make file if true
+
+make
+-make files format
+options:
+	target
+all:
+	
+opt2:
+	gcc 2 file
+  
+make install
+
+patch
+--is like an output of diff
+patch -pnum
+
+python 2.7 vs 3
+print statements different
+
+python
+
+specify a listprime_
+
+prime_nums = [2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31]
+
+for num in prime_nums:
+    print(num ** 2)
+
+defining a function
+
+def func():
+(four space or tabs)
+
+loops, conditional statements, function definitions
+
+week 4
+----------------------------------------------------------------
+VCS - GIT
+SVN, perforce
+
+repository 
+-files and folder related to software code
+full histgory of the software
+
+working copy
+-copy of software files in the repository
+
+checkout
+-to create a working copy of repository
+
+git repository objects
+
+blobs
+-sequence of bytes
+
+trees
+-groups blobs/trees together
+
+commit
+-refers to a particular git commit
+contains all information about the commit
+tags
+-labeld objects, just a named comit object for convenience
+ex. version number
+
+
+centralized sytem
+distributed system
+
+git is a combination of both
+
+git commands
+
+init
+clone - is to get a repository on your local machine
+checkout - gets a working copy, and create branches
+add . - adds all the changes at once, replace . with <filename> you want
+commit 
+push - pushes the changes to the main branch
+tag - label particular objects gives the tags of the commits
+log - gives the entire history
+status - shows the current state of current repository
+diff - show changes since previous commit
+show - git show on certain object gives comments on it
+revert -  git revert commit# will go back to this particular commmit
+merge - aggregate changes in each branch
+rebase- whats the difference between merge and rebase
+	-any changes that has happen all the changes will not be in history
+	- so rebase is more dangerous
+help
+
+final question on exam, given a case, you want to do something what do you do
+
+true or false question with reasoning
+multiple choice - more than one anwer can be correct
+
+8 to 9 questions are free form questions
+
+programming question
+system calls symbols
+python
+generating or creating patch
+c code and shell scripts and debugging 
+predict output
+predict the output of pattern match
+
+week 5
+------------------------------------------------------------------------------
+gcc -g filc.c -o file 
+ run gdb on the executable
+
+breakpoints:
+
+info breakpoints
+output of  breakpoints
+1:
+2:
+3:
+
+s --> step in
+c --> continue until next breakpoint
+f --> finish and return
+n --> next
+
+
+
+run time errors:
+
+run time errors
+seg faults
+
+compile time erros
+
+seg faults:
+index out of bounds 
+dereferencing free memory 
+stack overflow
+
+week 6
+---------------------------------------------------------------------------
+
+-- CPU modes --
+    There are two operating modes in CPU architecture.
+
+    * Kernel mode
+      Unristricted mode. Full instruction availability. I/O
+    operation, area of memory accessed are unlimitied.
+    * User mode
+      Limited instructions can be executed. I/O are not
+    permitted. Limited access to memory.
+
+
+kernel moniters all the system resources
+whenever applications are running you need to access memory resources
+we can do a system call to rquest service from kernel
+
+steps
+1) PROCESS is interuppted 
+2) save the state
+3) control is passed to the kernel mode
+4) verify if application have access to the resources
+5) OS will perform requested operation
+6) state will be restored
+7) app can continue executing
+
+instead of interuppting the prcoess 10 times , the library calls collect 
+the 10 lines into a buffer and execute all at once
+io buffer want to collect all input or output and when buffer is full, will
+perform all at once
+
+important commands
+gcc
+
+sys calls
+read
+write
+open
+close
+
+libary call equivalents
+getchar
+putchar
+fopen()
+fclose()
+
+strace will give you all the system calls that were made
+
+fstat()
+
+malloc
+realloc
+
+expect writing a c function using fstat and system calls
+also expect where you might need to know the differences between
+system calls and library calls
+
+week 7
+------------------------------------------------------------------
+
+multithreading 
+
+multiprocessing 
+multitasking
+multithreading --> true parallelism
+depends on number of cores
+
+multiprocessing --> time sharing 
+
+thread vs processing
+threads:
+
+share mem
+
+process:
+
+RPC, messaging
+Remote Procedure Call (RPC) is a protocol that
+one program can use to request a service from a
+program located in another computer in a network 
+without having to understand network details
+
+embarassingly parallel
+ is one where little or no effort is needed to 
+separate the problem into a number of parallel tasks.
+
+each thread has its own stack
+thread share heap
+
+each stack holds its
+own local variables and 
+return address
+function calls
+
+what happens if you dont have pthread_join
+then there is a race condition and the main function
+can exit before other threads are finished
+
+time 
+real time --> clock time beggining to end of functin
+usr time --> time app spent in user mode 
+system time --> total processor
+
+
+increasing the number threads will decrease real times
+system time increse from more overhead from more threads
+
+week 8
+---------------------------------------------------------------------
+
+dynamic linking
+
+src --------> obj ------------> exec
+   compiler        linker
+
+from the source code will assemble into assembly then
+into obj, linker links it into an executable
+
+usually we are linking and loading the library
+
+static vs dynamic linking
+
+static compiled all at once
+dynamic linked at runtime
+
+dynamic helps reduce size of executable
+
+if we have multiple functions using particular library
+then those multiple functions will have copy of same library
+with dynamic we can have all the executable refer to the same 
+library already loaded into library
+
+if I have an library already linked and the exectutable is ready, if I
+ make changes to the header file, then you have to recompile in static
+linking
+
+dybnamically libraries are called shared objects .so
+
+ldd will give you dependency in shared libraries
+
+use ldd on linux commants and you get 
+a .vdso
+
+vdso = virtual dynamic shared object
+-usedto simplify system calls
+
+if there were no program refering to dynamic library
+we have a counter keeping track of how many functions
+are using library
+if I use  dlopen it will increment counter
+dlclose() decrements this coutner
+if zero then removes the dynamic library
+
+disadvantage of static
+size of executable
+if the header file changes then you need to recompile
+
+dynamic linking
+-if the library is not loaded then small overhead to load it
+- or library is wrong version 
+
+dyn lib
+
+libname.so.n
+
+the n is the version library
+ex.
+libc.so.6
+
+ldd gives the dependency and will give the address
+
+lib => dependency => address
+
+attributes in functions
+
+_attribute_((__consructor__))
+_attribute_((__destructor__))
+
+attributes are used tell compiler tells the function is for
+construction or destruction
+
+dlopen
+dlysym
+dlclose
+dlerr
+
+gcc flags you need
+
+-g
+-fpic
+-shared
+-wl rpath
+-ldl
+
+wl flag can specify different options
+fpic = file position independent code
+ldl
+
+week 9
+-----------------------------------------------------------------------
+
+ssh
+
+-authorization
+-authentication
+-confidentiality
+-data integrity
+
+difference between ssh and telnet
+ssh is better than telnet because more secure
+
+symmetric encryption 
+assymetric
+
+ex of sym
+caser cipher
+
+
+ex of assym
+-rsa
+
+client generates the public and private key
+
+public key can only be decrypted by private key
+but they must be complements so it cant be a different 
+public key
+so public key and private key are related to each other
+
+sshagent 
+user add
+passwd
+
+once connection is established communication uses symmetric key
+client server athentication uses asymmetric key
+
+so every new session sshagent gives you a symmetric key
+
+
+
+digital signatures
+signining with private key
+verify with public key
+
+digital signature can be detached or attached to the document
+
+if i want to sign
+if i want send a message data is hashed into message digest encrypted
+using signers private key which signs it then sends the message
+
+verication works by 
+decrypting the signature into the hash and decrypt into hash
+and the data is then hashed so then we compare the two message
+digest(hash) and see if they are the same
+
+we used gpg -clearsigned
+   	gpg -detached
+
+know how to do the lab and hw for week 9

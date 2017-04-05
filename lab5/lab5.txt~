@@ -1,0 +1,89 @@
+first I wget http://web.cs.ucla.edu/classes/fall15/cs35L/assign/coreutils-with-bug.tar.gz
+
+then I cd into the 
+coreutils-with-bug 
+
+./configure
+make 
+
+make failed so  I downloaded the patch coreutils.diff
+
+patch -p0 < coreutils.diff
+
+these are the files that were patched:
+
+
+patching file lib/utimens.c
+patching file lib/utimens.h
+patching file src/copy.c
+patching file src/tee.c
+patching file src/touch.c
+
+
+./configure
+I then tried make again
+
+
+now I tried testing the error:
+
+
+mkdir tmp
+[classave@lnxsrv09 ~/cs35l/lab5/coreutils-with-bug/src]$ cd tmp
+[classave@lnxsrv09 ~/cs35l/lab5/coreutils-with-bug/src/tmp]$ touch -d '1918-11-11 11:00 GMT' wwi-armistice
+[classave@lnxsrv09 ~/cs35l/lab5/coreutils-with-bug/src/tmp]$ touch now
+[classave@lnxsrv09 ~/cs35l/lab5/coreutils-with-bug/src/tmp]$ sleep 1
+touh[classave@lnxsrv09 ~/cs35l/lab5/coreutils-with-bug/src/tmp]$ touch now
+[classave@lnxsrv09 ~/cs35l/lab5/coreutils-with-bug/src/tmp]$ touch now1
+[classave@lnxsrv09 ~/cs35l/lab5/coreutils-with-bug/src/tmp]$  TZ=UTC0 ls -lt --full-time wwi-armistice now now1
+-rw-r--r-- 1 classave class 0 2054-12-17 17:28:16.000000000 +0000 wwi-armistice
+-rw-r--r-- 1 classave class 0 2016-10-25 23:38:23.125909000 +0000 now1
+-rw-r--r-- 1 classave class 0 2016-10-25 23:38:18.676493000 +0000 now
+
+
+As you can see in this example 
+armistice is listed above now1 even though it is obviously older than now1
+
+I now began the debugging proces by first using GDB
+on ls, that didnt get me anywhere since I didnt know where to 
+put the breakpoints so I first looked at ls.c file and checked for 
+sort and cmp since it the listing was a problem of sorting and comparing
+which file is listed first or not, I narrowed it down to the cmp_mtime
+,cmp_atime options and I noticed that it all calls the timespec_cmp 
+function, which I thought could be the error since there was an issue with
+comparing the timestamps on the files (this was latered confirmed when 
+the TA was talking about how to do the lab on octover 27th) ,
+
+now I need to find out where time_cmp is located, so I figured that the
+function definition was declared in a header file in the lib folder, 
+I checked and it was correct, alternatively I could have used the find
+function and just used grep on "timespec" to find the hearder file
+I emacs timespec.h
+
+I found the time_cmp function 
+I saw that 
+there was a subtraction of 
+
+ int diff = a.tv_sec - b.tv_sec;
+  return diff ? diff : a.tv_nsec - b.tv_nsec;
+
+
+since there might be an issue of overflow if we merely subtract the 
+two terms , the correction is to used if else statements to return
+since it only matters if the value is positive, negative, or zero 
+I just changed it to a simple if else return statments of 1, 0 ,-1
+if (diff > 0)
+{
+return 1;
+}
+else if(diff < 0)
+{
+ return -1
+}
+else (diff == 0)
+{
+return 0;
+}
+
+now I had to make a patch so I 
+unzipped the original coreutils-with-bug and renamed the patched version
+by adding -patched to the name

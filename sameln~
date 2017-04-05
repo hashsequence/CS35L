@@ -1,0 +1,62 @@
+#!/bin/sh
+
+D=$1
+cd ../$D
+
+declare -a var
+declare -a flag
+
+name0=`ls -a $D | grep ^[.*] | sort -u`
+name=`ls -a  $D | grep -v ^[.*] | sort -u`
+i=0
+
+for f in $name0
+do 
+   if [ -f "$f" ] 
+   then
+      var[$i]="$f"
+      flag[$i]=1
+      ((i++))
+   fi
+done
+
+
+for f in $name
+do 
+   if [ -f "$f" ]
+   then
+      var[$i]="$f"
+      flag[$i]=1
+      ((i++))
+   fi
+done
+
+
+for ((j=0; j<i; j++))
+do  
+    if [ -f "${var[j]}" ] && [ ${flag[$j]} == 1 ]
+    then
+    flag[$j]=0
+    for((k=0; k<i;k++))
+    do
+        if ((j!=k))
+        then
+                if   cmp -s ${var[$j]} ${var[$k]} > /dev/null  
+                then
+                    if [ ${flag[$k]}==1 ]
+                    then
+                    rm ${var[$k]}
+	            echo "remove ${var[$k]}"
+                    ln ${var[$j]} ${var[$k]}
+                    echo "hardlink ${var[$k]} to ${var[$j]}"
+                    flag[$k]=0
+                    fi
+                fi
+        fi    
+    done
+    else
+    echo "file not readable"
+    fi
+done
+
+

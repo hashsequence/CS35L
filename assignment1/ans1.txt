@@ -1,0 +1,170 @@
+1) //commands: man man
+   //command: whatis apropos
+   ans: man -k "word"
+
+2) //:man whereis
+   //:whereis cp
+   //:whereis wc
+
+ans:/bin/cp
+ans:/usr/bin/wc
+
+3)
+
+//commnd: find -name "?"
+
+ans:
+X: a portable, network-transparent window system
+w: shows a list of user on the server and their activity
+[: no manual shown
+   
+4)//command: whereis emacs
+ //command: cd /usr/bin/
+ //command: readlink -f emacs
+
+ans: readlink -f emacs
+
+5)// on the man chmod page
+
+ans: the g+s gives the group permission to set ID on the file/directories
+ans: removes permission from others to execute said file/directories
+
+6) //man find
+ 
+ans : find -mtime 21
+
+7) 
+ans:
+
+find -mtime -21
+
+//here are the sample of the list of files that was modified within 3 weeks
+.
+./.login
+./.logout
+./.cshrc
+./.profile
+./.bash_logout
+./nsdefault
+./Desktop
+./Desktop/assign1
+./Desktop/assign1/assign1.html
+./Desktop/assign1/san1.txt
+./Desktop/assign1/exer2.html
+./Desktop/assign1/exer1.html
+./Desktop/assign1/exer3.html
+
+8)
+
+//command: whereis find
+//command: cd /bin
+//command: counterd blue links
+
+ans: 20
+
+9)
+
+
+//command: cd usr/lib
+//man find
+//-type f specifies regualr file
+
+ans:
+//command: $ find -type f  -printf "%T+%p\n" | sort | head -n 1
+
+2003-08-29+12:56:11.0000000000./x86_64-redhat-linux5E/include/bits/stdio-lock.h
+
+10) 
+
+ans: the locale command gets its data from the locale environmental variables listed on man locale:
+
+ LC_CTYPE
+
+               Character classification and case conversion.
+
+       LC_COLLATE
+
+               Collation order.
+
+       LC_TIME
+
+               Date and time formats.
+
+       LC_NUMERIC
+
+               Non-monetary numeric formats.
+
+       LC_MONETARY
+
+               Monetary formats.
+
+       LC_MESSAGES
+
+               Formats of informative and diagnostic messages and         interactive responses.
+
+11)
+
+//command c-h a
+
+ans:
+
+Buffer-menu-sort              M-x ... RET
+   Sort the buffer menu by COLUMN.
+Buffer-menu-sort-by-column    M-x ... RET
+   Sort the buffer menu by the column clicked on.
+ibuffer-invert-sorting        M-x ... RET
+   Toggle whether or not sorting is in reverse order.
+ibuffer-toggle-sorting-mode   M-x ... RET
+   Toggle the current sorting mode.
+rmail-sort-by-author          M-x ... RET
+   Sort messages of current Rmail buffer by author.
+rmail-sort-by-correspondent   M-x ... RET
+   Sort messages of current Rmail buffer by other correspondent.
+rmail-sort-by-date            M-x ... RET
+   Sort messages of current Rmail buffer by "Date" header.
+rmail-sort-by-labels          M-x ... RET
+   Sort messages of current Rmail buffer by labels.
+rmail-sort-by-lines           M-x ... RET
+   Sort messages of current Rmail buffer by the number of lines.
+rmail-sort-by-recipient       M-x ... RET
+   Sort messages of current Rmail buffer by recipient.
+rmail-sort-by-subject         M-x ... RET
+   Sort messages of current Rmail buffer by "Subject" header.
+sort-columns                  M-x ... RET
+   Sort lines in region alphabetically by a certain range of columns.
+sort-fields                   M-x ... RET
+   Sort lines in region lexicographically by the ARGth field of each line.
+sort-lines                    M-x ... RET
+   Sort lines in region alphabetically; argument means descending order.
+sort-numeric-fields           M-x ... RET
+   Sort lines in region numerically by the ARGth field of each line.
+
+12)
+
+  In Emacs, a parenthetical grouping at the top level in the buffer is
+called a "defun".
+
+ans:
+C-M-a
+beginning-of-defun. Move to the beginning of the current defun.
+
+C-M-h
+mark-defun. Sets the region around the current defun.
+
+13)
+
+the C-g strokes allowd you to abort a command you might have accidently typed or emacs is currently doing
+
+14) the yank function allows you to essentially paste whatever you have killed(copied), 
+ Start with C-y to get the most recent kill, and then use M-y to move to the previous spot
+ in the kill ring by replacing the just-yanked text with the previous kill.
+
+15)
+In Dired you are editing a list of the files in a dirtectory and optionally its subdirtectories, in the format of 
+ls -lR, meaning dired lets you edit the directories with commands from your keyboard, whereas the ls -l only list
+all the directories and doesnt let you touch it
+
+
+
+
+

@@ -1,0 +1,280 @@
+#include<stdio.h>
+#include<stdlib.h>
+#include<unistd.h>
+#include<sys/stat.h>
+#include<sys/types.h>
+/*
+fstat() - system call -> info about file
+
+int fstat(int filedescriptor, struct stat* buffers)
+
+is a dir/regular file
+inode n0 -> st_ino
+user id -> st_uid
+group id -> st_gid
+last access time -> st_atime
+last modified time st_mtime
+size
+last status change time -> st_ctime
+
+filestat.st_size
+filestat.st_mtime
+
+st_mode
+-> symbolic link
+->directory
+->regular file
+-> socket
+
+
+*/
+int cmp_count = 0;
+char decoder(char const * a)
+{
+  return (*a)^(42);
+}
+
+
+int cmpchar(char const *a, char const *b)
+{
+  if (decoder(a) > decoder(b))
+    {
+      return 1;
+    }
+  else if (decoder(a) < decoder(b))
+    {
+      return -1;
+    }
+  else 
+    {
+      return 0;
+    }
+       
+}
+
+int frobcmp(void const *a1, void const *b1)
+{
+  cmp_count++;
+  char const **a2 = (char const**)a1;
+  char const **b2 = (char const**)b1;
+  char const *a = *a2;
+  char const *b = *b2;
+  int value = 1234;
+  int i = 0; 
+  int j = 0;
+  while((a[i] != ' ' &&  b[j] != ' '))
+  {  
+      value = cmpchar(&a[i],&b[j]);
+      if (value != 0)
+	{	  
+	return value;
+	}
+      i++;
+      j++;
+    }
+   
+  if (a[i] == ' ' && b[j] != ' ')
+    return -1;
+  else if (a[i] != ' ' && b[j] == ' ')
+    return 1;
+  else 
+    return 0;
+}
+
+int main()
+{
+  struct stat fileStat;
+  if(fstat(0,&fileStat) < 0)    
+    {
+      fprintf(stderr, "fstat() error ");
+      exit(1);
+    }
+ char c;
+ int i = 0;
+ int inarr_size = 0;
+ char* inarr;
+ if (S_ISREG(fileStat.st_mode) && fileStat.st_size > 0)
+ {  
+     
+     inarr_size = fileStat.st_size;
+     inarr = (char*)malloc(sizeof(char)*inarr_size);
+     if( inarr == NULL)
+     {
+        fprintf(stderr, "Error allocating memory\n");
+        exit(1);
+
+     }
+ }
+ else if (fileStat.st_size == 0 && S_ISREG(fileStat.st_mode))
+   {
+     fprintf(stderr, "Comparisons: %d\n", cmp_count);
+     return 0;
+   }
+ else
+   {
+     inarr_size = 1;
+     inarr = (char*)malloc(sizeof(char)*inarr_size);
+     if( inarr == NULL)
+     {
+        fprintf(stderr, "Error allocating memory\n");
+        exit(1);
+
+     }
+   }
+     while (read(0,&c,sizeof(char))>0)
+       {
+	 if (i == inarr_size)
+	   {
+	     inarr_size*=2;
+	     inarr = (char*)realloc(inarr, sizeof(char)*inarr_size);
+	   }
+	   if( inarr == NULL)
+	     {
+	       fprintf(stderr, "Error allocating memory\n");
+	       exit(1);
+	     }
+	 inarr[i]=c;
+	 i++;
+       }
+     
+     if (i == inarr_size)
+	{
+          inarr_size*=2;
+          inarr = (char*)realloc(inarr, sizeof(char)*inarr_size);
+        }
+         if( inarr == NULL)
+	   {
+	     fprintf(stderr, "Error allocating memory\n");
+             exit(1);
+           }
+
+     if(S_ISREG(fileStat.st_mode))
+       {
+
+	 if (inarr[i-1] == '\n')
+	   {
+	     inarr[i-1]=' ';
+	   }
+	 else if (inarr[i-1] != ' ')
+	   {
+
+	     inarr[i]=' ';
+	     i++;
+	   }
+       } 
+     else
+       {
+
+	  if (inarr[i-1] != ' ')
+	   {
+	     inarr[i]=' ';
+	     i++;
+	   }
+       }
+ int j = 0;
+ int  max_string_length = 0;
+ int string_length = 0;
+ int nitems = 0;
+
+ for(j = 0; j < i; j++)
+   {
+    string_length++;
+     if (inarr[j] == ' ')
+       {
+	 nitems++;
+	 if(string_length >=  max_string_length)
+	   {
+	     max_string_length = string_length;
+	   }
+	 string_length = 0;
+       }
+     /*
+     if(j == i-1)
+       {
+	 max_string_length =  string_length;
+	 nitems = 1;
+       }
+     */
+   }
+ /* 
+printf("\n--------------------------------------------\n");
+printf("nitems %d \n", nitems);
+printf("max_string_length %d \n", max_string_length);
+printf("--------------------------------------------\n");
+ */
+ /*the tricky part was making a 2d array of char since you
+have to allocate the heap for each of the *strarr after allocating
+the number of rows for **strarr*/
+char **strarr = (char**)malloc(sizeof(char*)*nitems); 
+int m = 0;
+
+
+     if( strarr == NULL)
+    {
+      fprintf(stderr, "Error allocating memory\n");
+      exit(1);
+    }
+
+ for (m = 0; m < nitems; m++)
+   {
+     strarr[m]= (char*)malloc(sizeof(char)*max_string_length);
+     if( strarr[m] == NULL)
+    {
+      fprintf(stderr, "Error allocating memory\n");
+      exit(1);
+    }
+
+   }
+
+ int r = 0;
+ int t = 0;	
+ int k = 0;
+ int inarrcounter = 0;
+ int h = 0;
+ while(h < nitems) 
+   {
+     k = 0;
+     while (inarr[inarrcounter] != ' ' && inarrcounter < i)
+       {
+	 strarr[h][k] = inarr[inarrcounter];
+	 inarrcounter++;
+	 k++;
+       }     
+     if(inarr[inarrcounter] == ' ' &&  inarrcounter < i)
+       {
+	 strarr[h][k] = ' ';
+	 inarrcounter++;
+	 k++;
+       }
+     h++;
+   }
+ k = 0;
+
+  qsort(strarr,nitems,sizeof(char*),frobcmp);
+
+for(r = 0; r < nitems; r++)
+  {    
+    t = 0;
+    while(strarr[r][t] != ' ')
+      {
+	write(1,&strarr[r][t],sizeof(char));
+	t++;
+      }
+   write(1,&strarr[r][t],sizeof(char)); 
+  }
+/*
+printf("\n--------------------------------------------\n");
+printf("nitems %d \n", nitems);
+printf("max_string_length %d \n", max_string_length);
+printf("--------------------------------------------\n");
+*/
+fprintf(stderr, "Comparisons: %d\n", cmp_count);
+//freeing memory
+for(r = 0; r < nitems; r++)
+  {    
+    free(strarr[r]);
+  }
+    free(strarr);
+    free(inarr);
+    return 0;
+}

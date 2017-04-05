@@ -1,0 +1,218 @@
+
+ branch branch3.0
+Changes not staged for commit:
+  (use "git add <file>..." to update what will be committed)
+  (use "git checkout -- <file>..." to discard changes in working directory)
+
+  modified:   NEWS
+  modified:   README
+  modified:   TODO
+  modified:   doc/diagmeet.note
+  modified:   ms/config.bat
+  modified:   ms/config.site
+  modified:   po/en.po
+  modified:   src/analyze.c
+  modified:   src/cmp.c
+  modified:   src/context.c
+  modified:   src/diff.c
+  modified:   src/diff.h
+  modified:   src/diff3.c
+  modified:   src/dir.c
+  modified:   src/ifdef.c
+  modified:   src/io.c
+  modified:   src/sdiff.c
+  modified:   src/side.c
+  modified:   src/system.h
+  modified:   src/util.c
+  modified:   tests/help-version
+
+Untracked files:
+  (use "git add <file>..." to include in what will be committed)
+
+  NEWS.orig
+  README-hacking.orig
+  README-hacking.rej
+  README.orig
+  README.rej
+  cfg.mk.orig
+  cfg.mk.rej
+  gits-tags.txt
+  ms/config.site.orig
+  quote-patch.txt
+  src/cmp.c.orig
+  src/context.c.orig
+  src/diff.c.orig
+  src/diff.c.rej
+  src/diff.h.orig
+  src/diff3.c.orig
+  src/diff3.c.rej
+  src/dir.c.orig
+  src/sdiff.c.orig
+  src/system.h.orig
+  src/util.c.orig
+  tests/help-version.orig
+
+no changes added to commit (use "git add" and/or "git commit -a")
+[classave@lnxsrv07 ~/lab4/diffutils]$ emacs NEWS
+[classave@lnxsrv07 ~/lab4/diffutils]$ git status
+On branch branch3.0
+Changes not staged for commit:
+  (use "git add <file>..." to update what will be committed)
+  (use "git checkout -- <file>..." to discard changes in working directory)
+
+  modified:   README
+  modified:   TODO
+  modified:   doc/diagmeet.note
+  modified:   ms/config.bat
+  modified:   ms/config.site
+  modified:   po/en.po
+  modified:   src/analyze.c
+  modified:   src/cmp.c
+  modified:   src/context.c
+  modified:   src/diff.c
+  modified:   src/diff.h
+  modified:   src/diff3.c
+  modified:   src/dir.c
+  modified:   src/ifdef.c
+  modified:   src/io.c
+  modified:   src/sdiff.c
+  modified:   src/side.c
+  modified:   src/system.h
+  modified:   src/util.c
+  modified:   tests/help-version
+
+Untracked files:
+  (use "git add <file>..." to include in what will be committed)
+
+  NEWS.orig
+  README-hacking.orig
+  README-hacking.rej
+  README.orig
+  README.rej
+  cfg.mk.orig
+  cfg.mk.rej
+  gits-tags.txt
+  ms/config.site.orig
+  quote-patch.txt
+  src/cmp.c.orig
+  src/context.c.orig
+  src/diff.c.orig
+  src/diff.c.rej
+  src/diff.h.orig
+  src/diff3.c.orig
+  src/diff3.c.rej
+  src/dir.c.orig
+  src/sdiff.c.orig
+  src/system.h.orig
+  src/util.c.orig
+  tests/help-version.orig
+
+
+after changes:
+
+$ emacs src/io.c
+[classave@lnxsrv07 ~/lab4/diffutils]$ git status
+On branch branch3.0
+Changes not staged for commit:
+  (use "git add <file>..." to update what will be committed)
+  (use "git checkout -- <file>..." to discard changes in working directory)
+
+  modified:   src/cmp.c
+  modified:   src/diff.c
+  modified:   src/diff3.c
+  modified:   src/dir.c
+  modified:   src/sdiff.c
+  modified:   src/util.c
+
+Untracked files:
+  (use "git add <file>..." to include in what will be committed)
+
+  NEWS.orig
+  README-hacking.orig
+  README-hacking.rej
+  README.orig
+  README.rej
+  cfg.mk.orig
+  cfg.mk.rej
+  gits-tags.txt
+  ms/config.site.orig
+  quote-patch.txt
+  src/cmp.c.orig
+  src/context.c.orig
+  src/diff.c.orig
+  src/diff.c.rej
+  src/diff.h.orig
+  src/diff3.c.orig
+  src/diff3.c.rej
+  src/dir.c.orig
+  src/sdiff.c.orig
+  src/system.h.orig
+  src/util.c.orig
+  tests/help-version.orig
+
+no changes added to commit (use "git add" and/or "git commit -a")
+
+10)
+
+these are the only reject files that were not applied so I just
+manually applied these two
+ 
+ git status | grep "src/.*.c.rej"
+ src/diff.c.rej
+ src/diff3.c.rej
+
+this is what I have now:
+ git status
+On branch branch3.0
+Changes not staged for commit:
+  (use "git add <file>..." to update what will be committed)
+  (use "git checkout -- <file>..." to discard changes in working directory)
+
+  modified:   cmp.c
+  modified:   diff.c
+  modified:   diff3.c
+  modified:   dir.c
+  modified:   sdiff.c
+  modified:   util.c
+
+Untracked files:
+  (use "git add <file>..." to include in what will be committed)
+
+  ../NEWS.orig
+  ../README-hacking.orig
+  ../README-hacking.rej
+  ../README.orig
+  ../README.rej
+  ../cfg.mk.orig
+  ../cfg.mk.rej
+  ../git-log.txt
+  ../gits-tags.txt
+  ../ms/config.site.orig
+  ../quote-patch.txt
+  #diff.c.rej#
+  cmp.c.orig
+  context.c.orig
+  diff.c.orig
+  diff.c.rej
+  diff.h.orig
+  diff3.c.orig
+  diff3.c.rej
+  dir.c.orig
+  sdiff.c.orig
+  system.h.orig
+  util.c.orig
+  ../tests/help-version.orig
+
+no changes added to commit (use "git add" and/or "git commit -a")
+[classave@lnxsrv07 ~/lab4/diffutils/src]$ 
+
+
+14) 
+./bootstrap
+./configure
+make
+make check
+
+because I was using on lnxsrv07 I had to wget an additional patch
+then I did patch -p0 < diffutils-get.diff
+                                                                                 

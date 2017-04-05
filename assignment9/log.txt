@@ -1,0 +1,436 @@
+ssh
+1)authentication
+2)authorization
+3)data Integrity 
+4)consistency
+
+Tel Net
+Teletype Network
+
+the the teletype was not secure so did not satisfy the above properties
+sh --> secure SHell
+
+communicate in a secure manner happens in encrypted fashion
+
+two types of encryption:
+symmetric one key to encrypt and decrypt
+ ex. shifting by one ascii value A <-> B
+DES/AES
+
+assymmetric
+2 different key
+public key anyone can encyrpt the message
+private key, only user can decrypt
+
+ssh uses assymetric key encryption
+
+RSA
+related public key 
+N = p x q
+
+ssh
+1) Host validation 
+when you log in the first time it will ask a question and if you say yes it 
+will put the public key into your machine, save on the client]
+can decrypt with public key
+2) client validation
+the client cant inform the server, so the server can encrypt the message
+and send it back to the user because client have private key, user can 
+decrypt it 
+
+password based authentication 
+-> is the private key of clent, secured using password, which will give access
+to private key and will be decrypted
+
+SSH agent
+is a program that will handle access to the private key
+so you dont need to type password everytime
+handled by client
+
+For the lab we are doing host validation
+and client validattion
+
+Installing openssh
+=============================================
+----------------------------------
+
+ubuntu@ubuntu:~$ dpkg --get-selections | greo openssh
+No command 'greo' found, did you mean:
+ Command 'geo' from package 'rheolef' (universe)
+ Command 'grep' from package 'grep' (main)
+greo: command not found
+ubuntu@ubuntu:~$ ^C
+ubuntu@ubuntu:~$ dpkg --get-selections | grep openssh
+openssh-client	      		       	      install
+ubuntu@ubuntu:~$ sudo apt-get install openssh-server
+Reading package lists... Done
+Building dependency tree       
+Reading state information... Done
+The following additional packages will be installed:
+  ncurses-term openssh-sftp-server ssh-import-id
+Suggested packages:
+  ssh-askpass rssh molly-guard monkeysphere
+The following NEW packages will be installed:
+  ncurses-term openssh-server openssh-sftp-server ssh-import-id
+0 upgraded, 4 newly installed, 0 to remove and 0 not upgraded.
+Need to get 636 kB of archives.
+After this operation, 5,145 kB of additional disk space will be used.
+Do you want to continue? [Y/n] y
+Get:1 http://archive.ubuntu.com/ubuntu xenial/main amd64 ncurses-term all 6.0+20160213-1ubuntu1 [249 kB]
+Err:2 http://archive.ubuntu.com/ubuntu xenial-updates/main amd64 openssh-sftp-server amd64 1:7.2p2-4ubuntu1
+  404  Not Found [IP: 91.189.88.152 80]
+Err:3 http://archive.ubuntu.com/ubuntu xenial-updates/main amd64 openssh-server amd64 1:7.2p2-4ubuntu1
+  404  Not Found [IP: 91.189.88.152 80]
+Get:4 http://archive.ubuntu.com/ubuntu xenial/main amd64 ssh-import-id all 5.5-0ubuntu1 [10.2 kB]
+Fetched 259 kB in 0s (261 kB/s)          
+E: Failed to fetch http://archive.ubuntu.com/ubuntu/pool/main/o/openssh/openssh-sftp-server_7.2p2-4ubuntu1_amd64.deb  404  Not Found [IP: 91.189.88.152 80]
+
+E: Failed to fetch http://archive.ubuntu.com/ubuntu/pool/main/o/openssh/openssh-server_7.2p2-4ubuntu1_amd64.deb  404  Not Found [IP: 91.189.88.152 80]
+
+E: Unable to fetch some archives, maybe run apt-get update or try with --fix-missing?
+ubuntu@ubuntu:~$ dpkg --get-selections | grep openssh
+openssh-client	      		       	      install
+ubuntu@ubuntu:~$ sudo apt-get install openssh-server
+Reading package lists... Done
+Building dependency tree       
+Reading state information... Done
+The following additional packages will be installed:
+  ncurses-term openssh-sftp-server ssh-import-id
+Suggested packages:
+  ssh-askpass rssh molly-guard monkeysphere
+The following NEW packages will be installed:
+  ncurses-term openssh-server openssh-sftp-server ssh-import-id
+0 upgraded, 4 newly installed, 0 to remove and 0 not upgraded.
+Need to get 376 kB/636 kB of archives.
+After this operation, 5,145 kB of additional disk space will be used.
+Do you want to continue? [Y/n] y
+Err:1 http://archive.ubuntu.com/ubuntu xenial-updates/main amd64 openssh-sftp-server amd64 1:7.2p2-4ubuntu1
+  404  Not Found [IP: 91.189.88.152 80]
+Err:2 http://archive.ubuntu.com/ubuntu xenial-updates/main amd64 openssh-server amd64 1:7.2p2-4ubuntu1
+  404  Not Found [IP: 91.189.88.152 80]
+E: Failed to fetch http://archive.ubuntu.com/ubuntu/pool/main/o/openssh/openssh-sftp-server_7.2p2-4ubuntu1_amd64.deb  404  Not Found [IP: 91.189.88.152 80]
+
+E: Failed to fetch http://archive.ubuntu.com/ubuntu/pool/main/o/openssh/openssh-server_7.2p2-4ubuntu1_amd64.deb  404  Not Found [IP: 91.189.88.152 80]
+
+E: Unable to fetch some archives, maybe run apt-get update or try with --fix-missing?
+ubuntu@ubuntu:~$ dpkg --get-selections | grep openssh
+openssh-client	      		       	      install
+ubuntu@ubuntu:~$ sudo apt-get install openssh-server
+Reading package lists... Done
+Building dependency tree       
+Reading state information... Done
+The following additional packages will be installed:
+  ncurses-term openssh-sftp-server ssh-import-id
+Suggested packages:
+  ssh-askpass rssh molly-guard monkeysphere
+The following NEW packages will be installed:
+  ncurses-term openssh-server openssh-sftp-server ssh-import-id
+0 upgraded, 4 newly installed, 0 to remove and 0 not upgraded.
+Need to get 376 kB/636 kB of archives.
+After this operation, 5,145 kB of additional disk space will be used.
+Do you want to continue? [Y/n] Y
+Err:1 http://archive.ubuntu.com/ubuntu xenial-updates/main amd64 openssh-sftp-server amd64 1:7.2p2-4ubuntu1
+  404  Not Found [IP: 91.189.88.152 80]
+Err:2 http://archive.ubuntu.com/ubuntu xenial-updates/main amd64 openssh-server amd64 1:7.2p2-4ubuntu1
+  404  Not Found [IP: 91.189.88.152 80]
+E: Failed to fetch http://archive.ubuntu.com/ubuntu/pool/main/o/openssh/openssh-sftp-server_7.2p2-4ubuntu1_amd64.deb  404  Not Found [IP: 91.189.88.152 80]
+
+E: Failed to fetch http://archive.ubuntu.com/ubuntu/pool/main/o/openssh/openssh-server_7.2p2-4ubuntu1_amd64.deb  404  Not Found [IP: 91.189.88.152 80]
+
+E: Unable to fetch some archives, maybe run apt-get update or try with --fix-missing?
+ubuntu@ubuntu:~$ sudo apt-get update
+Ign:1 cdrom://Ubuntu 16.04.1 LTS _Xenial Xerus_ - Release amd64 (20160719) xenial InRelease
+Hit:2 cdrom://Ubuntu 16.04.1 LTS _Xenial Xerus_ - Release amd64 (20160719) xenial Release
+Hit:3 http://archive.ubuntu.com/ubuntu xenial InRelease
+Get:4 http://archive.ubuntu.com/ubuntu xenial-updates InRelease [95.7 kB]
+Get:5 http://security.ubuntu.com/ubuntu xenial-security InRelease [94.5 kB]
+Get:7 http://archive.ubuntu.com/ubuntu xenial-updates/main amd64 Packages [419 kB]
+Get:8 http://security.ubuntu.com/ubuntu xenial-security/main amd64 Packages [163 kB]
+Get:9 http://security.ubuntu.com/ubuntu xenial-security/main Translation-en [67.8 kB]
+Get:10 http://security.ubuntu.com/ubuntu xenial-security/main amd64 DEP-11 Metadata [82.9 kB]
+Get:11 http://security.ubuntu.com/ubuntu xenial-security/main DEP-11 64x64 Icons [62.9 kB]
+Get:12 http://archive.ubuntu.com/ubuntu xenial-updates/main Translation-en [161 kB]
+Get:13 http://security.ubuntu.com/ubuntu xenial-security/restricted amd64 Packages [6,576 B]
+Get:14 http://security.ubuntu.com/ubuntu xenial-security/restricted Translation-en [2,016 B]
+Get:15 http://security.ubuntu.com/ubuntu xenial-security/restricted amd64 DEP-11 Metadata [200 B]
+Get:16 http://archive.ubuntu.com/ubuntu xenial-updates/main amd64 DEP-11 Metadata [334 kB]
+Get:17 http://archive.ubuntu.com/ubuntu xenial-updates/main DEP-11 64x64 Icons [199 kB]
+Get:18 http://archive.ubuntu.com/ubuntu xenial-updates/restricted amd64 Packages [6,576 B]
+Get:19 http://archive.ubuntu.com/ubuntu xenial-updates/restricted Translation-en [2,016 B]
+Fetched 1,698 kB in 3s (463 kB/s)                                      
+
+** (appstreamcli:7884): CRITICAL **: Error while moving old database out of the way.
+AppStream cache update failed.
+Reading package lists... Done
+ubuntu@ubuntu:~$ sudo apt-get install openssh-server
+Reading package lists... Done
+Building dependency tree       
+Reading state information... Done
+The following additional packages will be installed:
+  ncurses-term openssh-client openssh-sftp-server ssh-import-id
+Suggested packages:
+  ssh-askpass libpam-ssh keychain monkeysphere rssh molly-guard
+The following NEW packages will be installed:
+  ncurses-term openssh-server openssh-sftp-server ssh-import-id
+The following packages will be upgraded:
+  openssh-client
+1 upgraded, 4 newly installed, 0 to remove and 284 not upgraded.
+Need to get 964 kB/1,223 kB of archives.
+After this operation, 5,145 kB of additional disk space will be used.
+Do you want to continue? [Y/n] y
+Get:1 http://security.ubuntu.com/ubuntu xenial-security/main amd64 openssh-client amd64 1:7.2p2-4ubuntu2.1 [587 kB]
+Get:2 http://security.ubuntu.com/ubuntu xenial-security/main amd64 openssh-sftp-server amd64 1:7.2p2-4ubuntu2.1 [38.8 kB]
+Get:3 http://security.ubuntu.com/ubuntu xenial-security/main amd64 openssh-server amd64 1:7.2p2-4ubuntu2.1 [338 kB]
+Fetched 964 kB in 0s (1,101 kB/s)       
+Preconfiguring packages ...
+(Reading database ... 191931 files and directories currently installed.)
+Preparing to unpack .../openssh-client_1%3a7.2p2-4ubuntu2.1_amd64.deb ...
+Unpacking openssh-client (1:7.2p2-4ubuntu2.1) over (1:7.2p2-4ubuntu1) ...
+Selecting previously unselected package ncurses-term.
+Preparing to unpack .../ncurses-term_6.0+20160213-1ubuntu1_all.deb ...
+Unpacking ncurses-term (6.0+20160213-1ubuntu1) ...
+Selecting previously unselected package openssh-sftp-server.
+Preparing to unpack .../openssh-sftp-server_1%3a7.2p2-4ubuntu2.1_amd64.deb ...
+Unpacking openssh-sftp-server (1:7.2p2-4ubuntu2.1) ...
+Selecting previously unselected package openssh-server.
+Preparing to unpack .../openssh-server_1%3a7.2p2-4ubuntu2.1_amd64.deb ...
+Unpacking openssh-server (1:7.2p2-4ubuntu2.1) ...
+Selecting previously unselected package ssh-import-id.
+Preparing to unpack .../ssh-import-id_5.5-0ubuntu1_all.deb ...
+Unpacking ssh-import-id (5.5-0ubuntu1) ...
+Processing triggers for man-db (2.7.5-1) ...
+Processing triggers for systemd (229-4ubuntu7) ...
+Processing triggers for ureadahead (0.100.0-19) ...
+Processing triggers for ufw (0.35-0ubuntu2) ...
+Setting up openssh-client (1:7.2p2-4ubuntu2.1) ...
+Setting up ncurses-term (6.0+20160213-1ubuntu1) ...
+Setting up openssh-sftp-server (1:7.2p2-4ubuntu2.1) ...
+Setting up openssh-server (1:7.2p2-4ubuntu2.1) ...
+Creating SSH2 RSA key; this may take some time ...
+2048 SHA256:uEYixyYil1NXklwvJ2Eyy+720FqjOQEFnhcDJVOmGM8 root@ubuntu (RSA)
+Creating SSH2 DSA key; this may take some time ...
+1024 SHA256:m4LmyM3tT4Tq5dINdTl+GFCvQqpe5vJzRg2x0cA4wyA root@ubuntu (DSA)
+Creating SSH2 ECDSA key; this may take some time ...
+256 SHA256:CqsjuGOHa/5nMCaMSisUYmXlnQQAtodVDgYdllp+/c4 root@ubuntu (ECDSA)
+Creating SSH2 ED25519 key; this may take some time ...
+256 SHA256:XR7qHvDgUYi3XSKBXFACqJyNMPGTSWzRzKBscf7XKtA root@ubuntu (ED25519)
+Setting up ssh-import-id (5.5-0ubuntu1) ...
+Processing triggers for systemd (229-4ubuntu7) ...
+Processing triggers for ureadahead (0.100.0-19) ...
+Processing triggers for ufw (0.35-0ubuntu2) ...
+ubuntu@ubuntu:~$ 
+ubuntu@ubuntu:~$ dpkg --get-selections | grep openssh
+openssh-client	      		       	      install
+openssh-server								install
+openssh-sftp-server										install
+ubuntu@ubuntu:~$ 
+
+
+SERVER 
+==================================================
+-------------------------------------------------
+(1)generate public and private keys
+ssh -keygen
+dont change the default location
+
+explanation:
+I need to do this to generate the public and private keys
+----------------------------------------------------
+ubuntu@ubuntu:~$ ssh-keygen
+Generating public/private rsa key pair.
+Enter file in which to save the key (/home/ubuntu/.ssh/id_rsa): 
+Enter passphrase (empty for no passphrase): 
+Enter same passphrase again: 
+Your identification has been saved in /home/ubuntu/.ssh/id_rsa.
+Your public key has been saved in /home/ubuntu/.ssh/id_rsa.pub.
+The key fingerprint is:
+SHA256:4DrX6mW5i3CKqMl4jJoDNSWKaX7K4nWw3NjJr5s8ROg ubuntu@ubuntu
+The key's randomart image is:
++---[RSA 2048]----+
+|                 |
+|  . .            |
+|.o o. .          |
+|+.o. o .         |
+|o..o. . S        |
+|...EBo.. .       |
+|ooo==*o =        |
+|**+.oBo= .       |
+|%=. .*B.o.       |
++----[SHA256]-----+
+ubuntu@ubuntu:~$ 
+
+--------------------------------------------------------
+(2)
+create an account for the client on the server
+sudo useradd -d/home/<homedir_name> -m
+<username>
+sudo passwd <username>
+
+explanation:
+I need to do this to give the client  secure account 
+to access my server
+-------------------------------------------------------
+ubuntu@ubuntu:~$ sudo useradd -d /home/averysrv -m averysrv
+ubuntu@ubuntu:~$ sudo passwd averysrv
+Enter new UNIX password: 
+Retype new UNIX password: 
+passwd: password updated successfully
+ubuntu@ubuntu:~$ 
+
+//the pasword I put was averysrv
+//the password is the same as the server name to make it easy to 
+//remember for my partner
+------------------------------------------------------------
+(3)
+create .ssh directory for new user
+cd /home/<homedir_name>
+sudo mkdir .ssh
+
+explanation:
+this is to give the user a directory that
+they have permssion to work in 
+--------------------------------------
+
+ubuntu@ubuntu:~$ cd /home/averysrv
+ubuntu@ubuntu:/home/averysrv$ sudo mkdir .ssh
+
+
+//I made the directory name averysrv for consistency
+-------------------------------------------------------------
+(4)changeownership and permission .ssh director
+sudo chown -R username .ssh
+sudo chmod 700 .ssh
+
+explanation
+give the ownership to the accound
+and alow owner to read write and execute
+--------------------------------------------------------------
+
+ubuntu@ubuntu:/home/averysrv$ sudo chown -R averysrv .ssh
+ubuntu@ubuntu:/home/averysrv$ chmod 700 .sh
+chmod: cannot access '.sh': No such file or directory
+ubuntu@ubuntu:/home/averysrv$ chmod 700 .ssh
+chmod: changing permissions of '.ssh': Operation not permitted
+ubuntu@ubuntu:/home/averysrv$ sudo chmod 700 .ssh
+ubuntu@ubuntu:/home/averysrv$ 
+
+
+---------------------------------------------------------------------
+(5)
+optional: disable password-based authentication
+emacs /etc/ssh/sshd_config
+change PasswordAuthentication option to no
+
+explanation:
+this is an optional step to disable pasword based authentication
+so its is now only be possible to connect from computers you have specifically approved
+------------------------------------------------------------
+
+I used vi /etc/ssh/sshd_config
+
+and manully changed it to no
+
+
+-----------------------------------------------------------------------
+
+I used ifconig to find inet: 10.97.85.102
+to give my partner Deandra Sumitro UID: 904 468 235
+
+CLIENT STEPS
+======================================================================
+------------------------------------------------------------------
+(1)generate public and private keys
+-ssh-keygen
+-----------------------------------------------------------------------
+
+
+
+ubuntu@ubuntu:/home/averyclient$ ssh-keygen
+Generating public/private rsa key pair.
+Enter file in which to save the key (/home/ubuntu/.ssh/id_rsa): 
+/home/ubuntu/.ssh/id_rsa already exists.
+Overwrite (y/n)? y
+Enter passphrase (empty for no passphrase): 
+Enter same passphrase again: 
+Your identification has been saved in /home/ubuntu/.ssh/id_rsa.
+Your public key has been saved in /home/ubuntu/.ssh/id_rsa.pub.
+The key fingerprint is:
+SHA256:TMQ47Y7oTp/a4M1DfGdw3Nrz7tzSSHkKElfGs3uJMtc ubuntu@ubuntu
+The key's randomart image is:
++---[RSA 2048]----+
+|       +.    .   |
+|      o.o     =  |
+|       o.. . o o |
+|       oo + o .  |
+|     o oSo =  oo.|
+|    . + o =o+o+Eo|
+|   .o. . o .+= * |
+|   o.*..     .=..|
+|   .+.*.     o+..|
++----[SHA256]-----+
+
+
+
+
+--------------------------------------------------------------------------
+(2)
+copy your public key to the server for key based authentication
+(~/.ssh/authorized_keys)
+ssh-copy-id -i Username@server_ip_addr
+
+explanation:
+to allow the public key to be added for the client
+-------------------------------------------------------------------------
+
+
+ubuntu@ubuntu:/home/averyclient$ ssh-copy-id -i dsrv@10.97.85.103
+/usr/bin/ssh-copy-id: INFO: Source of key(s) to be installed: "/home/ubuntu/.ssh/id_rsa.pub"
+The authenticity of host '10.97.85.103 (10.97.85.103)' can't be established.
+ECDSA key fingerprint is SHA256:tsVd+LGZHv8rEm4xGeZW804kpk/iBnFSh1BWgtTUCpE.
+Are you sure you want to continue connecting (yes/no)? yes
+/usr/bin/ssh-copy-id: INFO: attempting to log in with the new key(s), to filter out any that are already installed
+/usr/bin/ssh-copy-id: INFO: 1 key(s) remain to be installed -- if you are prompted now it is to install the new keys
+dsrv@10.97.85.103's password: 
+
+Number of key(s) added: 1
+
+Now try logging into the machine, with:   "ssh 'dsrv@10.97.85.103'"
+and check to make sure that only the key(s) you wanted were added.
+
+
+
+--------------------------------------------------------------------------
+(3)
+add private key to authentication agent (ssh-agent)
+ssh-add
+
+explanation:
+to add the private key to the ssh-agent so recognize client
+-------------------------------------------------------------------------
+
+
+ubuntu@ubuntu:/home/averyclient$ ssh-add
+Identity added: /home/ubuntu/.ssh/id_rsa (/home/ubuntu/.ssh/id_rsa)
+
+
+
+
+
+----------------------------------------------------------------------------
+(4)
+ssh to server
+ssh username@server_ip_addr
+ssh -X username@server_ip_addr (x11 forwarding)
+
+explantion:
+trying to access server
+-----------------------------------------------------------------------------
+ubuntu@ubuntu:/home/averyclient$ ssh dsrv@10.97.85.103
+Welcome to Ubuntu 16.04.1 LTS (GNU/Linux 4.4.0-31-generic x86_64)
+
+ * Documentation:  https://help.ubuntu.com
+ * Management:     https://landscape.canonical.com
+ * Support:        https://ubuntu.com/advantage
+
+
+$ 

@@ -1,0 +1,310 @@
+(1)
+First I went to the savannah websit and got a clone using
+the command:
+
+git clone git://git.savannah.gnu.org/diffutils.git
+
+(2)
+
+To get the changes of the git log I basically redirected
+the git log ouptut into a text file using >
+command: git log > git-log.txt
+
+(3)
+To get the tags I did the same thing but with tag instead
+command: git tag > git-log.txt
+
+(4)
+git log | grep - n "maint: quote 'like this' or \"like this\", not \`like this'"
+gives me the line number in the git log
+I also used C-s on emacs on git-log.txt and found the commit by pattern matching
+I found the commit number of which was:
+commit 62ca21c8c1a5aa3488589dcb191a4ef04ae9ed4f
+I used git show 62ca21c8c1a5aa3488589dcb191a4ef04ae9ed4f > quote-patch.txt
+then I tried using git apply --check quote-patch.txt and I got a 
+bunch of errors
+/*
+notes:
+git tag - list of tags
+checkout 
+to use this do:
+git checkout ____ -b branchname
+changelog 2008
+git format -patch -n
+if it was -3 the lat 3 commits will be checked
+if I say 1
+git fomat -patch -n -stdout HEAD > filename
+git am < patchfile
+
+git add .
+git commit -m  "first commit"
+
+for the last part of the hw:
+gitk
+x-11 window system
+start x ming server on windows
+x Display location: IP
+cmd > ipconfip
+ 
+if not windows do
+
+ssh -x classave.....
+
+*/
+because I made a newbranch1 I had to commit this then make a newbranch2 v3.0
+git add .
+git commit -m "first commit"
+git checkout v3.0 -b newbranch2
+I used this to check out the 3.0 repository by making 
+a new branch
+I used patch -p1 < quote-patch.txt
+
+6)
+
+patch -p1 < quote-patch.txt
+
+7)
+git status
+
+This is what showed up:
+
+
+ branch branch3.0
+Changes not staged for commit:
+  (use "git add <file>..." to update what will be committed)
+  (use "git checkout -- <file>..." to discard changes in working directory)
+
+  modified:   NEWS
+  modified:   README
+  modified:   TODO
+  modified:   doc/diagmeet.note
+  modified:   ms/config.bat
+  modified:   ms/config.site
+  modified:   po/en.po
+  modified:   src/analyze.c
+  modified:   src/cmp.c
+  modified:   src/context.c
+  modified:   src/diff.c
+  modified:   src/diff.h
+  modified:   src/diff3.c
+  modified:   src/dir.c
+  modified:   src/ifdef.c
+  modified:   src/io.c
+  modified:   src/sdiff.c
+  modified:   src/side.c
+  modified:   src/system.h
+  modified:   src/util.c
+  modified:   tests/help-version
+
+Untracked files:
+  (use "git add <file>..." to include in what will be committed)
+
+  NEWS.orig
+  README-hacking.orig
+  README-hacking.rej
+  README.orig
+  README.rej
+  cfg.mk.orig
+  cfg.mk.rej
+  gits-tags.txt
+  ms/config.site.orig
+  quote-patch.txt
+  src/cmp.c.orig
+  src/context.c.orig
+  src/diff.c.orig
+  src/diff.c.rej
+  src/diff.h.orig
+  src/diff3.c.orig
+  src/diff3.c.rej
+  src/dir.c.orig
+  src/sdiff.c.orig
+  src/system.h.orig
+  src/util.c.orig
+  tests/help-version.orig
+
+no changes added to commit (use "git add" and/or "git commit -a")
+
+9)
+
+SO I want to revert all the non c files and c files that didnt have the 
+string literal change, I can do this by going on to emacs and use the vc-revert
+command on each of the files individuall, for the c files I used the vu-diff 
+command to check the c files and see if there were any changes other than 
+the string litrals conversion to ' and revert those that had other changes
+after reverting everything this is what I have left that is still modified:
+
+
+  modified:   src/cmp.c
+  modified:   src/diff.c
+  modified:   src/diff3.c
+  modified:   src/dir.c
+  modified:   src/sdiff.c
+  modified:   src/util.c
+
+
+10)
+ git status | grep "src/.*.c.rej"
+
+  modified:   src/cmp.c
+  modified:   src/diff.c
+  modified:   src/diff3.c
+  modified:   src/dir.c
+  modified:   src/sdiff.c
+  modified:   src/util.c
+
+ 
+ git status | grep "src/.*.c.rej"
+ src/diff.c.rej
+ src/diff3.c.rej
+
+these are the only reject files that were not applied so I just
+manually applied these two
+
+this is what I have now:
+ git status
+On branch branch3.0
+Changes not staged for commit:
+  (use "git add <file>..." to update what will be committed)
+  (use "git checkout -- <file>..." to discard changes in working directory)
+
+  modified:   cmp.c
+  modified:   diff.c
+  modified:   diff3.c
+  modified:   dir.c
+  modified:   sdiff.c
+  modified:   util.c
+
+Untracked files:
+  (use "git add <file>..." to include in what will be committed)
+
+  ../NEWS.orig
+  ../README-hacking.orig
+  ../README-hacking.rej
+  ../README.orig
+  ../README.rej
+  ../cfg.mk.orig
+  ../cfg.mk.rej
+  ../git-log.txt
+  ../gits-tags.txt
+  ../ms/config.site.orig
+  ../quote-patch.txt
+  #diff.c.rej#
+  cmp.c.orig
+  context.c.orig
+  diff.c.orig
+  diff.c.rej
+  diff.h.orig
+  diff3.c.orig
+  diff3.c.rej
+  dir.c.orig
+  sdiff.c.orig
+  system.h.orig
+  util.c.orig
+  ../tests/help-version.orig
+
+no changes added to commit (use "git add" and/or "git commit -a")
+[classave@lnxsrv07 ~/lab4/diffutils/src]$ 
+
+so basically I manually apply the patches to diff.c and diff3.c
+
+11)
+
+I want to get rid of untracked files which are:
+
+
+  ../NEWS.orig
+  ../README-hacking.orig
+  ../README-hacking.rej
+  ../README.orig
+  ../README.rej
+  ../cfg.mk.orig
+  ../cfg.mk.rej
+  ../git-log.txt
+  ../gits-tags.txt
+  ../ms/config.site.orig
+  ../quote-patch.txt
+  #diff.c.rej#
+  cmp.c.orig
+  context.c.orig
+  diff.c.orig
+  diff.c.rej
+  diff.h.orig
+  diff3.c.orig
+  diff3.c.rej
+  dir.c.orig
+  sdiff.c.orig
+  system.h.orig
+  util.c.orig
+  ../tests/help-version.orig
+
+I can use git clean -f to remove these untracked files
+
+
+12)$ git status
+On branch branch3.0
+Changes not staged for commit:
+  (use "git add <file>..." to update what will be committed)
+  (use "git checkout -- <file>..." to discard changes in working directory)
+
+	modified:   src/cmp.c
+	modified:   src/diff.c
+	modified:   src/diff3.c
+	modified:   src/dir.c
+	modified:   src/sdiff.c
+	modified:   src/util.c
+
+I then used git diff > quote-3.0-patch.txt 
+
+
+13)
+
+looked at READM-hacking
+
+I tried doing ./bootstrap but I had a helpman not found so I 
+
+ export PATH=/usr/local/cs/bin:$PATH
+
+./bootstrap
+./configure
+make 
+make check
+
+
+because I was using on lnxsrv07 I had to wget an additional patch
+then I did patch -p0 < diffutils-get.diff
+
+sample output:
+
+ ./diff . -
+./diff: cannot compare '-' to a directory
+
+I used patch 
+
+14)
+
+I rename the diffutils directory to diffutils-patched 
+then I cp the diffutils-patched into diffultis-3.0-patch
+
+I git cloned from savannah again to get the original diffutils
+ git clone git://git.savannah.gnu.org/diffutils.git
+
+the I cp the diffutils into diffutils-3.0
+
+these are the cp commands
+
+cp -ar diffutils/src diffutils-3.0
+cp -ar diffutils-patch/src diffutils-3.0-patch
+
+then i used:
+
+diffutils-patch/src/diff -pru diffutils-3.0 diffutils-3.0-patch 
+> quote-3.0-test.txt
+
+15)
+
+diff quote-3.0-test.txt quote-3.0-patch.txt
+
+this command gave me the differences:
+
+obviously the differences were the conversion of back ticks to single quotes
+

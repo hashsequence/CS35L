@@ -1,0 +1,68 @@
+first I did
+export PATH=/usr/local/cs/bin:$PATH
+then I did
+sort --version and I got
+
+8.25
+Copyright (C) 2016 Free Software Foundation, Inc.
+License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>.
+This is free software: you are free to change and redistribute it.
+There is NO WARRANTY, to the extent permitted by law.
+
+Written by Mike Haertel and Paul Eggert.
+
+Now I want to generate 10,000,000 double precision doubles, so I since
+each double is 8  bytes I need N = 80,000,000
+
+so I used this command first 
+
+od  -tf8 -N 80000000 < /dev/urandom | tr -s ' ' '\n' > random.txt
+
+but it gave my the offset numbers on the first column so I did
+
+od -An -tf8 -N 80000000 < /dev/urandom | tr -s ' ' '\n' > random.txt
+
+I made a second random2.txt with this command:
+
+od -An -tf -N 80000000 < /dev/urandom | tr -s ' ' '\n' > random2.txt
+
+this is what I got after testing with 1,2,4,8 threads:
+
+[classave@lnxsrv09 ~/cs35l/assignment7]$ time -p sort -g --parallel=1 random.txt > /dev/null
+real 4.09
+user 4.08
+sys 0.01
+[classave@lnxsrv09 ~/cs35l/assignment7]$ time -p sort -g --parallel=2 random.txt > /dev/null
+real 2.18
+user 4.13
+sys 0.01
+[classave@lnxsrv09 ~/cs35l/assignment7]$ time -p sort -g --parallel=4 random.txt > /dev/null
+real 1.31
+user 4.32
+sys 0.01
+[classave@lnxsrv09 ~/cs35l/assignment7]$ time -p sort -g --parallel=8 random.txt > /dev/null
+real 1.33
+user 4.37
+sys 0.01
+
+
+for random2.txt
+
+[classave@lnxsrv09 ~/cs35l/assignment7]$ time -p sort -g --parallel=1 random2.txt > /dev/null
+real 176.77
+user 176.52
+sys 0.24
+[classave@lnxsrv09 ~/cs35l/assignment7]$ time -p sort -g --parallel=2 random2.txt > /dev/null
+real 93.29
+user 178.08
+sys 0.35
+[classave@lnxsrv09 ~/cs35l/assignment7]$ time -p sort -g --parallel=4 random2.txt > /dev/null
+real 55.08
+user 186.62
+sys 0.46
+[classave@lnxsrv09 ~/cs35l/assignment7]$ time -p sort -g --parallel=8 random2.txt > /dev/null
+real 38.85
+user 193.50
+sys 0.56
+
+as you can see the real time is about 1.8x faster with double the parallel 

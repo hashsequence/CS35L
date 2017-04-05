@@ -1,0 +1,7 @@
+#!/usr/bin/python
+
+dict={}
+dict['year']=2016
+if(dict['year']>2000):
+print "Welcome to the 20th century!"
+

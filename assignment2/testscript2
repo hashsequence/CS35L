@@ -1,0 +1,13 @@
+#!/bin/sh
+
+temp=`ls`
+
+for f in $temp
+do 
+    if [ -f $f ] # test if $f is a file
+    then
+	echo "Is a file"
+    else
+	echo $f
+    fi
+done

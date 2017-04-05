@@ -1,0 +1,2 @@
+ The subwindows show the channel logs and 
+the right subwindow shows the comments

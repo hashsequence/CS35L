@@ -1,0 +1,59 @@
+#!/bin/sh
+
+declare -a var
+declare -a flag
+
+name=`ls -a | sort -u`
+i=0
+
+
+for f in $name
+do 
+   if [ -f "$f" ]
+   then
+      var[$i]="$f"
+
+      flag[$i]=1
+      ((i++))
+   fi
+done
+
+for ((j=0; j<i; j++))
+do
+echo "${var[$j]} and flag: ${flag[$j]}"
+done
+
+for ((j=0; j<i; j++))
+do  
+    if [ -f "${var[j]}" ] && [ ${flag[$j]} == 1 ]
+    then
+    echo "${var[$j]} is now zero first"
+    flag[$j]=0
+    for((k=0; k<i;k++))
+    do
+        if ((j!=k))
+        then
+                if   cmp -s ${var[$j]} ${var[$k]} > /dev/null  
+                then
+                    if [ ${flag[$k]}==1 ]
+                    then
+                    rm ${var[$k]}
+	            echo "remove ${var[$k]}"
+                    ln ${var[$j]} ${var[$k]}
+                    echo "hardlink ${var[$k]} to ${var[$j]}"
+                    echo "${var[$k]} is now zero"
+                    flag[$k]=0
+                    fi
+                fi
+        else
+                echo "same"
+        fi    
+    done
+    fi
+done
+
+
+for ((j=0; j<i; j++))
+do
+echo "${var[$j]} and flag: ${flag[$j]}"
+done

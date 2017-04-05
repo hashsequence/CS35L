@@ -1,0 +1,13 @@
+#!/usr/bin/python
+
+words = ['first', 'second', 'third', 'fourth']
+
+print "First mrthod\n"
+
+for word in words:
+    print word
+
+print "\nSecond Method \n"
+
+for i in range(len(words)):
+    print words[i]

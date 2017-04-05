@@ -1,0 +1,3 @@
+#!/bin/sh
+
+cat /usr/local/cs/jdk*/jre/lib/rt.jar | ./sfrobu | wc -l

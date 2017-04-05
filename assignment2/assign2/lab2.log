@@ -1,0 +1,24 @@
+assignment 2 log
+----------------------------------------
+
+first I used the did export LC_ALL='C'
+then I used the command locale and it did as intended
+
+commnands:
+/usr/share/dict/words
+cp words /u/eng/class/classave/cs35l/assignment2
+sort words
+
+//in my assignment2/cs35L 
+commands:
+wget -o assign2.txt web.cs.ucla.edu/classes/fall16/cs35L/assign/assign2.html
+
+now that I got all my files into my working directory I now tested the tr
+commands
+
+commands:
+tr -c 'A-Za-z' '[\n*]' < assign2.txt
+
+this command seems to remove all non-alpha strings and leaves a string on each
+line with many spaces between each word non-uniformly
+

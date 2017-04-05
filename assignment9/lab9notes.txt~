@@ -1,0 +1,52 @@
+ssh
+1)authentication
+2)authorization
+3)data Integrity 
+4)consistency
+
+Tel Net
+Teletype Network
+
+the the teletype was not secure so did not satisfy the above properties
+sh --> secure SHell
+
+communicate in a secure manner happens in encrypted fashion
+
+two types of encryption:
+symmetric one key to encrypt and decrypt
+ ex. shifting by one ascii value A <-> B
+DES/AES
+
+assymmetric
+2 different key
+public key anyone can encyrpt the message
+private key, only user can decrypt
+
+ssh uses assymetric key encryption
+
+RSA
+related public key 
+N = p x q
+
+ssh
+1) Host validation 
+when you log in the first time it will ask a question and if you say yes it 
+will put the public key into your machine, save on the client]
+can decrypt with public key
+2) client validation
+the client cant inform the server, so the server can encrypt the message
+and send it back to the user because client have private key, user can 
+decrypt it 
+
+password based authentication 
+-> is the private key of clent, secured using password, which will give access
+to private key and will be decrypted
+
+SSH agent
+is a program that will handle access to the private key
+so you dont need to type password everytime
+handled by client
+
+FOR the lab we are doinf host validation
+and client validattion
+

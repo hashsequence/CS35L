@@ -1,0 +1,55 @@
+Q1)
+It was not neccessary to remove the 
+case_long_iso_time_style since there was another
+case: case long_iso_time_style  above in the patch so
+it would have fallen through in the switch statement
+
+Q2)
+the patch changes the data time formats
+to year month day hour minutes, it might introduce problems
+when users dont understand english
+
+
+Q3)
+
+[classave@lnxsrv07 ~]$ python randline.py /dev/null
+Traceback (most recent call last):
+  File "randline.py", line 70, in <module>
+    main()
+  File "randline.py", line 64, in main
+    sys.stdout.write(generator.chooseline())
+  File "randline.py", line 34, in chooseline
+    return random.choice(self.lines)
+  File "/usr/lib64/python2.7/random.py", line 274, in choice
+    return seq[int(self.random() * len(seq))]  # raises IndexError if seq is empty
+IndexError: list index out of range
+
+in the randline.py code:
+ try:
+        numlines = int(options.numlines)
+    except:
+	parser.error("invalid NUMLINES: {0}".
+
+because it was empty and the number of lines is zero it throws out 
+an index error because there is no lines in an empty file
+
+
+Q4)
+[classave@lnxsrv07 ~]$ /usr/local/cs/bin/python3 randline.py /dev/null
+  File "randline.py", line 65
+    except IOError as (errno, strerror):
+
+I looked at the code and the lines reads this:
+
+    except IOError as (errno, strerror):
+        parser.error("I/O error({0}): {1}".
+	             format(errno, strerror))
+
+SyntaxError: invalid syntax
+
+the correct syntax should be 
+
+except IOerror as err
+                      
+exceptions in python2 is iteratable which was taken out in python3
+
